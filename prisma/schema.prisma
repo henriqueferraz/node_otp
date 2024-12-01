@@ -3,23 +3,22 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  id    Int    @id @default(autoincrement())
   name  String
   email String @unique
-  Otp   Otp[]
+  otps  Otp[]
 }
 
 model Otp {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id
   code      String
-  userId    String   @db.ObjectId
+  userId    Int
   expiresAt DateTime
   used      Boolean  @default(false)
-
-  user User @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
