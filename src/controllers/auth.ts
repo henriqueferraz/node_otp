@@ -5,6 +5,7 @@ import { createUser, getUserByEmail } from "../services/user";
 import { generateOtp, validateOTP } from "../services/otp";
 import { sendEmail } from "../libs/mailtrap";
 import { authUseOTPShema } from "../schemas/auth-useotp";
+import { createJWT } from "../libs/jwt";
 
 
 export const signin: RequestHandler = async (req, res) => {
@@ -75,5 +76,8 @@ export const useOTP: RequestHandler = async (req, res) => {
     }
 
     // Cria o JWT
+    const token = createJWT(user.id);
+
     // Retorna o JWT
+    res.json({ token, user });
 }
